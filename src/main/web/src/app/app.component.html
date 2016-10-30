@@ -1,0 +1,39 @@
+
+  <md-input #term placeholder="Your path to scan" maxlength="100" class="demo-full-width"
+            value="like C:\ or /">
+  </md-input>
+  <button (click)="search(term.value)" md-mini-fab>
+    <md-icon  class="md-24">scan</md-icon>
+  </button>
+
+<md-tab-group (selectChange)="changeTab($event)">
+  <md-tab>
+    <template md-tab-label>Scaned dirs</template>
+    <template md-tab-content>
+      <md-list>
+        <h1 md-subheader>Folders</h1>
+        <md-divider></md-divider>
+        <md-list-item *ngFor="let dir of dirs">
+          <md-icon md-list-avatar>folder</md-icon>
+          <h4 md-line>{{dir.path}}</h4>
+        </md-list-item>
+      </md-list>
+    </template>
+  </md-tab>
+  <md-tab>
+    <template md-tab-label>Top biggest files</template>
+    <template md-tab-content>
+      <md-list>
+      <h1 md-subheader>Files</h1>
+        <md-divider></md-divider>
+      <md-list-item *ngFor="let file of files">
+        <md-icon (click)="openPath(file.NAME)" md-list-avatar>find</md-icon>
+        <h4 md-line>{{file.NAME}} {{file.SIZE}}  </h4>
+      </md-list-item>
+
+      </md-list>
+    </template>
+  </md-tab>
+</md-tab-group>
+
+
