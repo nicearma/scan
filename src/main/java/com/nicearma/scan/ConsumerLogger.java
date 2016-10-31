@@ -1,11 +1,9 @@
-package com.nicearma;
+package com.nicearma.scan;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import io.vertx.ext.jdbc.JDBCClient;
 
 /**
  * Created by nicea on 05/10/2016.

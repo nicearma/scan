@@ -1,4 +1,4 @@
-package com.nicearma;
+package com.nicearma.scan;
 
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.AbstractVerticle;

@@ -1,7 +1,7 @@
-package com.nicearma;
+package com.nicearma.scan;
 
-import com.nicearma.db.DBConnector;
-import com.nicearma.db.DBSql;
+import com.nicearma.scan.db.DBConnector;
+import com.nicearma.scan.db.DBSql;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.logging.Logger;

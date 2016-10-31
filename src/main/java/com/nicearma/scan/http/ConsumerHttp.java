@@ -1,6 +1,6 @@
-package com.nicearma.http;
+package com.nicearma.scan.http;
 
-import com.nicearma.Scan;
+import com.nicearma.scan.Scan;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;

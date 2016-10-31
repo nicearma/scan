@@ -1,4 +1,4 @@
-package com.nicearma.db;
+package com.nicearma.scan.db;
 
 /**
  * Created by nicea on 23/10/2016.

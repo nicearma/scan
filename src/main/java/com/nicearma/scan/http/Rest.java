@@ -1,9 +1,9 @@
-package com.nicearma.http;
+package com.nicearma.scan.http;
 
 
-import com.nicearma.Scan;
-import com.nicearma.db.DBConnector;
-import com.nicearma.db.DBSql;
+import com.nicearma.scan.Scan;
+import com.nicearma.scan.db.DBConnector;
+import com.nicearma.scan.db.DBSql;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
@@ -23,9 +23,6 @@ import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class Rest extends AbstractVerticle {
 
