@@ -30,12 +30,12 @@ export class ScanService extends GeneralService{
     eb.onopen = function() {
 
         // set a handler to receive a message
-        eb.registerHandler('httpFileProps', function (error, message) {
+        eb.registerHandler('eventHttpFileProps', function (error, message) {
            that._files.next(<File> that.tranform(message));
         });
 
         // set a handler to receive a message
-        eb.registerHandler('httpDirScaned', function (error, message) {
+        eb.registerHandler('eventHttpDirScaned', function (error, message) {
           that._dirs.next(<Dir> that.tranform(message));
         });
 

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { MaterialModule } from '@angular/material';
-
+import '@angular/material/core/theming/prebuilt/deeppurple-amber.css';
 import { AppComponent } from './app.component';
 
 @NgModule({

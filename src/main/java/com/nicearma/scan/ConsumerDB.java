@@ -24,8 +24,7 @@ public class ConsumerDB  extends AbstractVerticle {
 
         dbConnector.getJbdc().getConnection(resultConnection->{
 
-            String nicolas ="nico";
-            this.vertx.eventBus().consumer(Scan.FILE_PROPS, message -> {
+            this.vertx.eventBus().consumer(Scan.EVENT_FILE_PROPS, message -> {
                 JsonArray params=(JsonArray) message.body();
 
                     if(resultConnection.succeeded()){
@@ -33,6 +32,7 @@ public class ConsumerDB  extends AbstractVerticle {
                             if(result.succeeded()){
                                 logger.debug("insert",params);
                             }else{
+                                logger.error("error INSERT_FILE",params.toString());
                                 logger.error(result.cause());
                             }
                         });
@@ -41,7 +41,7 @@ public class ConsumerDB  extends AbstractVerticle {
 
             });
 
-            this.vertx.eventBus().consumer(Scan.DIR_PROPS, message -> {
+            this.vertx.eventBus().consumer(Scan.EVENT_DIR_PROPS, message -> {
                 JsonArray params=(JsonArray) message.body();
 
                 if(resultConnection.succeeded()){
@@ -49,6 +49,7 @@ public class ConsumerDB  extends AbstractVerticle {
                         if(result.succeeded()){
                             logger.debug("insert",params);
                         }else{
+                            logger.error("error INSERT_DIR",params.toString());
                             logger.error(result.cause());
                         }
                     });
@@ -60,6 +61,7 @@ public class ConsumerDB  extends AbstractVerticle {
                         if(result.succeeded()){
                             logger.debug("insert","CREATE TABLE IF NOT EXISTS files");
                         }else{
+
                             logger.error(result.cause());
                         }
 

@@ -27,13 +27,26 @@
       <h1 md-subheader>Files</h1>
         <md-divider></md-divider>
       <md-list-item *ngFor="let file of files">
-        <md-icon (click)="openPath(file.NAME)" md-list-avatar>find</md-icon>
-        <h4 md-line>{{file.NAME}} {{file.SIZE}}  </h4>
-      </md-list-item>
+        <p md-list-avatar>
 
+        </p>
+      <!--  <md-icon (click)="openPath(file.NAME)" md-list-avatar>insert_drive_file</md-icon>-->
+        <h4 md-line>{{file.NAME}}</h4>
+        <p md-line>{{file.SIZE}}</p>
+      </md-list-item>
       </md-list>
     </template>
+
   </md-tab>
 </md-tab-group>
 
 
+  <button x-position="before"  y-position="above"  md-icon-button [md-menu-trigger-for]="menu">
+    <md-icon>more_vert</md-icon>
+  </button>
+
+  <md-menu #menu="mdMenu">
+    <button md-menu-item> Open </button>
+    <button md-menu-item> Folder </button>
+    <button md-menu-item> Delete </button>
+  </md-menu>

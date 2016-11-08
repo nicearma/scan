@@ -15,7 +15,7 @@ public class ConsumerLogger extends AbstractVerticle {
     // Called when verticle is deployed
     public void start() {
 
-        this.vertx.eventBus().consumer("fileProps", message -> {
+        this.vertx.eventBus().consumer(Scan.EVENT_FILE_PROPS, message -> {
             JsonArray params=(JsonArray) message.body();
             logger.info(params);
 

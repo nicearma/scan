@@ -1,5 +1,7 @@
 package com.nicearma.scan;
 
+import com.nicearma.scan.json.JsonFile;
+import com.nicearma.scan.json.JsonPath;
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.file.FileProps;
@@ -16,13 +18,12 @@ public class Scan extends AbstractVerticle {
 
     Logger logger = LoggerFactory.getLogger(Scan.class);
 
-    public static final String PATH="path";
-    public static final String DIR_PROPS ="dirProps";
-    public static final String FILE_PROPS="fileProps";
-    public static final String DIR_SCANED ="dirScaned";
+    public static final String EVENT_PATH ="eventPath";
+    public static final String EVENT_DIR_PROPS ="eventDirProps";
+    public static final String EVENT_FILE_PROPS ="eventFileProps";
+    public static final String EVENT_DIR_SCANED ="eventDirScaned";
 
-    public static final String JSON_PATH="path";
-    public static final String JSON_PATH_ORIGINAL="pathOriginal";
+
 
     JDBCClient jdbc;
 
@@ -34,42 +35,41 @@ public class Scan extends AbstractVerticle {
     public void start() {
 
 
-        this.vertx.eventBus().consumer(PATH, message -> {
+        this.vertx.eventBus().consumer(EVENT_PATH, message -> {
 
-            JsonObject pathInfo=(JsonObject) message.body();
-            String path =pathInfo.getString(JSON_PATH);
+            JsonPath jsonPath= new JsonPath((JsonObject) message.body());
 
-            if(StringUtil.isNullOrEmpty(path)){
+            if(StringUtil.isNullOrEmpty(jsonPath.getPath())){
                 logger.error("EmptyPathError:",message.body());
                 return;
             }
 
             //logger.info(path);
-            vertx.fileSystem().props(path, props -> {
+            vertx.fileSystem().props(jsonPath.getPath(), props -> {
                 //logger.info(path);
                 if (props.succeeded()) {
                     if (props.result().isDirectory()) {
-                        vertx.fileSystem().readDir(path, resultDir -> {
+                        vertx.fileSystem().readDir(jsonPath.getPath(), resultDir -> {
                             if (resultDir.succeeded()) {
                                 if(resultDir.result()!=null && !resultDir.result().isEmpty()){
                                     resultDir.result().stream().forEach(pathToScan -> {
-                                        sendPath(pathToScan,path);
+                                        sendPath(pathToScan,jsonPath.getPath());
                                     });
                                     //This is not really truth
-                                    sendDirScaned(path);
-                                    sendPathProps(props.result(),path);
+                                    sendDirScaned(jsonPath.getPath());
+                                    sendPathProps(props.result(),jsonPath.getPath());
                                 }
 
                             } else {
-                                logger.error("ReadError:"+path,resultDir.cause());
+                                logger.error("ReadError:"+jsonPath.getPath(),resultDir.cause());
                             }
                         });
                     } else if (props.result().isRegularFile()) {
-                        sendFileProps(props.result(),pathInfo);
+                        sendFileProps(props.result(),jsonPath);
                     }
 
                 }else{
-                    logger.error("PropsError:"+path,props);
+                    logger.error("PropsError:"+jsonPath.getPath(),props);
                 }
              });
 
@@ -81,33 +81,21 @@ public class Scan extends AbstractVerticle {
         JsonArray params = new JsonArray();
         params.add(path);
         params.add(fileProps.size());
-        this.vertx.eventBus().publish(DIR_PROPS, params);
+        this.vertx.eventBus().publish(EVENT_DIR_PROPS, params);
     }
 
     private void sendDirScaned(String path){
-        this.vertx.eventBus().publish(DIR_SCANED, path);
+        this.vertx.eventBus().publish(EVENT_DIR_SCANED, path);
     }
 
-    private void sendFileProps(FileProps fileProps, JsonObject pathInfo){
-        JsonArray params = new JsonArray();
-        params.add(pathInfo.getString(JSON_PATH_ORIGINAL));
-        params.add(pathInfo.getString(JSON_PATH));
-        params.add(fileProps.size());
-        this.vertx.eventBus().publish(FILE_PROPS, params);
-
+    private void sendFileProps(FileProps fileProps, JsonPath jsonPath){
+        JsonFile jsonFile = new JsonFile(jsonPath.getPath(),jsonPath.getPathOriginal(),fileProps.size() );
+        this.vertx.eventBus().publish(EVENT_FILE_PROPS, jsonFile.getJsonArray());
     }
 
     private void sendPath(String pathToScan ,String pathOriginal){
-        JsonObject pathInfoSend= new JsonObject();
-        pathInfoSend.put(JSON_PATH_ORIGINAL,pathOriginal);
-        pathInfoSend.put(JSON_PATH, pathToScan);
-        this.vertx.eventBus().send(PATH, pathInfoSend);
+        JsonObject pathInfoSend=JsonPath.getJsonObject(pathToScan,pathOriginal);
+        this.vertx.eventBus().send(EVENT_PATH, pathInfoSend);
     }
 
-
-
-
-    // Optional - called when verticle is undeployed
-    public void stop() {
-    }
 }

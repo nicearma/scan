@@ -23,6 +23,7 @@ export class AppComponent {
     });
     this.scanService.getObservableFile().subscribe((file)=>{
       if(file&& file.NAME){
+        file.SIZE=file.SIZE/12500000;
         that.files.push(file);
       }
     });
@@ -34,7 +35,6 @@ export class AppComponent {
   openPath(path: string){
     this.pathService.openPath(path);
   }
-
   changeTab($event){
     console.log($event);
     if($event.index===1){

@@ -4,8 +4,11 @@ package com.nicearma.scan.http;
 import com.nicearma.scan.Scan;
 import com.nicearma.scan.db.DBConnector;
 import com.nicearma.scan.db.DBSql;
+import com.nicearma.scan.json.JsonPath;
+import io.netty.util.internal.StringUtil;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.file.FileProps;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
@@ -29,8 +32,8 @@ public class Rest extends AbstractVerticle {
     Router router;
     protected DBConnector dbConnector;
     Logger logger = LoggerFactory.getLogger(Rest.class);
-    public static final String HTTP_FILE_PROPS = "httpFileProps";
-    public static final String HTTP_DIR_SCANED = "httpDirScaned";
+    public static final String EVENT_HTTP_FILE_PROPS = "eventHttpFileProps";
+    public static final String EVENT_HTTP_DIR_SCANED = "eventHttpDirScaned";
 
 
     public Rest(DBConnector dbConnector) {
@@ -61,19 +64,45 @@ public class Rest extends AbstractVerticle {
 
         router.post("/scan").handler(handler -> {
             JsonObject jsonIn = handler.getBodyAsJson();
-            JsonObject pathInfo = new JsonObject();
-            pathInfo.put(Scan.JSON_PATH, jsonIn.getString(Scan.JSON_PATH));
-            vertx.eventBus().send(Scan.PATH, pathInfo);
+            if (StringUtil.isNullOrEmpty(jsonIn.getString(JsonPath.KEY_PATH))) {
+                reponseBadRequest(handler.response());
+                return;
+            }
+
+            this.vertx.fileSystem().exists(jsonIn.getString(JsonPath.KEY_PATH), exists -> {
+
+                if (exists.result()) {
+                    JsonObject pathInfo = new JsonObject();
+                    pathInfo.put(JsonPath.KEY_PATH, jsonIn.getString(JsonPath.KEY_PATH));
+                    vertx.eventBus().send(Scan.EVENT_PATH, pathInfo);
+                    reponseOk(handler.response());
+                } else {
+                    reponseBadRequest(handler.response());
+                }
+
+            });
+
+
         });
+    }
+
+    protected void reponseBadRequest(HttpServerResponse response) {
+        response.setStatusCode(404).end();
+        return;
+    }
+
+    protected void reponseOk(HttpServerResponse response) {
+        response.setStatusCode(200).end();
+        return;
     }
 
     public void addRouteOpenPath() {
 
         router.post("/path/open").handler(handler -> {
             JsonObject jsonIn = handler.getBodyAsJson();
-            String path =jsonIn.getString(Scan.JSON_PATH);
-            if(path !=null ){
-                vertx.fileSystem().exists(path, pathResult->{
+            String path = jsonIn.getString(JsonPath.KEY_PATH);
+            if (path != null) {
+                vertx.fileSystem().exists(path, pathResult -> {
                     try {
                         Desktop.getDesktop().open(new File(path));
                     } catch (IOException e) {
@@ -93,7 +122,7 @@ public class Rest extends AbstractVerticle {
         router.post("/files").handler(handler -> {
             JsonArray pagination = new JsonArray();
             JsonObject jsonIn = null;
-            if (handler.getBody() != null && handler.getBody().length()>0) {
+            if (handler.getBody() != null && handler.getBody().length() > 0) {
                 jsonIn = handler.getBodyAsJson();
             }
 
@@ -116,7 +145,7 @@ public class Rest extends AbstractVerticle {
                         if (resultSelect.succeeded()) {
                             HttpServerResponse response = handler.response();
                             response.putHeader("content-type", "application/json");
-                            Buffer output=  Buffer.buffer(resultSelect.result().toJson().getJsonArray("rows").encode());
+                            Buffer output = Buffer.buffer(resultSelect.result().toJson().getJsonArray("rows").encode());
                             response.putHeader("Content-Length", String.valueOf(output.length()));
 
                             response.write(output).end();

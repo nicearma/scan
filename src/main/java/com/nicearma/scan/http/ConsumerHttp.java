@@ -1,6 +1,7 @@
 package com.nicearma.scan.http;
 
 import com.nicearma.scan.Scan;
+import com.nicearma.scan.json.JsonPath;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
@@ -16,14 +17,14 @@ public class ConsumerHttp  extends AbstractVerticle  {
 
     @Override
     public void start() throws Exception {
-        this.vertx.eventBus().consumer(Scan.FILE_PROPS, message -> {
-            this.vertx.eventBus().publish(Rest.HTTP_FILE_PROPS,message.body());
+        this.vertx.eventBus().consumer(Scan.EVENT_FILE_PROPS, message -> {
+            this.vertx.eventBus().publish(Rest.EVENT_HTTP_FILE_PROPS,message.body());
         });
 
-        this.vertx.eventBus().consumer(Scan.DIR_SCANED, message -> {
+        this.vertx.eventBus().consumer(Scan.EVENT_DIR_SCANED, message -> {
             JsonObject json= new JsonObject();
-            json.put(Scan.JSON_PATH,message.body() );
-            this.vertx.eventBus().publish(Rest.HTTP_DIR_SCANED,json);
+            json.put(JsonPath.KEY_PATH,message.body() );
+            this.vertx.eventBus().publish(Rest.EVENT_HTTP_DIR_SCANED,json);
         });
     }
 
