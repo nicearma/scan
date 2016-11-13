@@ -5,8 +5,8 @@ import {Http} from "@angular/http";
 @Injectable()
 export class PathService extends GeneralService{
 
-  private pathUrl="/path";
-  private pathOpenUrl=this.pathUrl+"/open";
+  private pathUrl="/api/path";
+  private pathOpenUrl=this.pathUrl+"/api/open";
 
   constructor(protected http: Http){
     super(http);

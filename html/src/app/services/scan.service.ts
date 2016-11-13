@@ -17,9 +17,9 @@ export class ScanService extends GeneralService{
   public files: Observable<File> = this._files.asObservable();
   eb:any;
 
-  private api='/api';
-  private scanUrl='/scan';
-  private beginUrl='/files';
+  private api='/api/socket';
+  private scanUrl='/api/scan';
+  private beginUrl='/api/files';
 
   constructor(protected http: Http) {
     super(http);

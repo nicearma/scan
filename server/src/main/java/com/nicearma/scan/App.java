@@ -1,5 +1,7 @@
-package com.nicearma.scan;
+package com.nicearma;
 
+import com.nicearma.scan.ConsumerDB;
+import com.nicearma.scan.Scan;
 import com.nicearma.scan.db.DBConnector;
 import com.nicearma.scan.http.ConsumerHttp;
 import com.nicearma.scan.http.Rest;

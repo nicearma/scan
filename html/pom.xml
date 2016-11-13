@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>scan</artifactId>
+    <groupId>com.nicearma.scan</groupId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>html</artifactId>
+  <version>0.1-SNAPSHOT</version>
+
+  <properties>
+    <npm.executable>ng</npm.executable>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.5.0</version>
+        <executions>
+          <execution>
+            <id>ng-build</id>
+            <phase>compile</phase>
+            <configuration>
+              <executable>${npm.executable}</executable>
+              <arguments>
+                <argument>build</argument>
+              </arguments>
+            </configuration>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+          <!--
+          <execution>
+            <id>ng-clean</id>
+            <phase>clean</phase>
+            <configuration>
+              <executable>${npm.executable}</executable>
+              <arguments>
+                <argument>clean</argument>
+              </arguments>
+            </configuration>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>-->
+        </executions>
+      </plugin>
+    </plugins>
+    <resources>
+      <resource>
+        <directory>./dist</directory>
+      </resource>
+    </resources>
+  </build>
+  <profiles>
+    <profile>
+      <id>platform-windows</id>
+      <activation>
+        <os>
+          <family>windows</family>
+        </os>
+      </activation>
+      <properties>
+        <!-- Override the executable names for Windows -->
+        <npm.executable>ng.cmd</npm.executable>
+      </properties>
+    </profile>
+  </profiles>
+</project>

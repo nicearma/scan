@@ -8,7 +8,6 @@ import com.nicearma.scan.json.JsonPath;
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.file.FileProps;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
@@ -19,6 +18,7 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
+import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.ext.web.handler.sockjs.PermittedOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
@@ -57,12 +57,13 @@ public class Rest extends AbstractVerticle {
         addRouteScanDir();
         addGetBiggestFile();
         addRouteOpenPath();
+        addStaticFiles();
         server.requestHandler(router::accept).listen(8080);
     }
 
     public void addRouteScanDir() {
 
-        router.post("/scan").handler(handler -> {
+        router.post("/api/scan").handler(handler -> {
             JsonObject jsonIn = handler.getBodyAsJson();
             if (StringUtil.isNullOrEmpty(jsonIn.getString(JsonPath.KEY_PATH))) {
                 reponseBadRequest(handler.response());
@@ -98,7 +99,7 @@ public class Rest extends AbstractVerticle {
 
     public void addRouteOpenPath() {
 
-        router.post("/path/open").handler(handler -> {
+        router.post("/api/path/open").handler(handler -> {
             JsonObject jsonIn = handler.getBodyAsJson();
             String path = jsonIn.getString(JsonPath.KEY_PATH);
             if (path != null) {
@@ -119,7 +120,7 @@ public class Rest extends AbstractVerticle {
 
     public void addGetBiggestFile() {
 
-        router.post("/files").handler(handler -> {
+        router.post("/api/files").handler(handler -> {
             JsonArray pagination = new JsonArray();
             JsonObject jsonIn = null;
             if (handler.getBody() != null && handler.getBody().length() > 0) {
@@ -161,9 +162,15 @@ public class Rest extends AbstractVerticle {
     protected void addSocketSendScanFolder() {
         SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
         BridgeOptions options = new BridgeOptions()
-                .addOutboundPermitted(new PermittedOptions().setAddressRegex("http.*"));
+                .addOutboundPermitted(new PermittedOptions().setAddressRegex("eventHttp.*"));
         sockJSHandler.bridge(options);
-        router.route("/api/*").handler(sockJSHandler);
+        router.route("/api/socket/*").handler(sockJSHandler);
     }
+
+    protected void addStaticFiles() {
+        router.route("/*").handler(StaticHandler.create());
+
+    }
+
 
 }
