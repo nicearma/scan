@@ -23,7 +23,7 @@ export class AppComponent {
     });
     this.scanService.getObservableFile().subscribe((file)=>{
       if(file&& file.NAME){
-        file.SIZE=file.SIZE/12500000;
+        file.SIZE=file.SIZE;
         that.files.push(file);
       }
     });
