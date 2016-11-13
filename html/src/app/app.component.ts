@@ -32,7 +32,10 @@ export class AppComponent {
 
      this.scanService.scan(term);
   }
-  openPath(path: string){
+  openPath(path?: string){
+    this.pathService.openPath(path);
+  }
+  deletePath(path?: string){
     this.pathService.openPath(path);
   }
   changeTab($event){

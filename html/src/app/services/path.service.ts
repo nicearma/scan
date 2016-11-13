@@ -6,7 +6,7 @@ import {Http} from "@angular/http";
 export class PathService extends GeneralService{
 
   private pathUrl="/api/path";
-  private pathOpenUrl=this.pathUrl+"/api/open";
+  private pathOpenUrl=this.pathUrl+"/open";
 
   constructor(protected http: Http){
     super(http);
