@@ -89,7 +89,8 @@ public class Scan extends AbstractVerticle {
     }
 
     private void sendFileProps(FileProps fileProps, JsonPath jsonPath){
-        JsonFile jsonFile = new JsonFile(jsonPath.getPath(),jsonPath.getPathOriginal(),fileProps.size() );
+        JsonFile jsonFile = new JsonFile(jsonPath.getPath(),jsonPath.getPathOriginal(),fileProps.size());
+        jsonFile.cleanFilePath();
         this.vertx.eventBus().publish(EVENT_FILE_PROPS, jsonFile.getJsonArray());
     }
 

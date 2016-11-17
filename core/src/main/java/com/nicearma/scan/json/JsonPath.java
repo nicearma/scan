@@ -12,8 +12,8 @@ public class JsonPath implements Json {
     public static final String KEY_PATH="path";
     public static final String KEY_PATH_ORIGINAL="pathOriginal";
 
-    private String path;
-    private String pathOriginal;
+    protected String path;
+    protected String pathOriginal;
 
     public JsonPath(JsonObject jsonObject) {
         this.path = jsonObject.getString(KEY_PATH);

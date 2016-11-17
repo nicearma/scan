@@ -1,4 +1,4 @@
-import {Dir} from './Dir';
+import {Folder} from './Folder';
 
 export interface File{
   PATH: String,

@@ -56,6 +56,8 @@ public class Rest extends AbstractVerticle {
         addSocketSendScanFolder();
         addRouteScanDir();
         addGetBiggestFile();
+        addGetBiggestExtension();
+        addGetBiggestFolder();;
         addRouteOpenPath();
         addStaticFiles();
         server.requestHandler(router::accept).listen(8080);
@@ -119,8 +121,18 @@ public class Rest extends AbstractVerticle {
     }
 
     public void addGetBiggestFile() {
+        addGetInformation("/api/biggest/file",DBSql.GET_BIGGEST_FILE);
+    }
+    public void addGetBiggestFolder() {
+        addGetInformation("/api/biggest/folder",DBSql.GET_BIGGEST_FILE);
+    }
+    public void addGetBiggestExtension() {
+        addGetInformation("/api/biggest/extension",DBSql.GET_BIGGEST_FILE);
+    }
 
-        router.post("/api/files").handler(handler -> {
+    public void addGetInformation(String route, String SQL) {
+
+        router.post(route).handler(handler -> {
             JsonArray pagination = new JsonArray();
             JsonObject jsonIn = null;
             if (handler.getBody() != null && handler.getBody().length() > 0) {
@@ -142,14 +154,14 @@ public class Rest extends AbstractVerticle {
             this.dbConnector.getJbdc().getConnection(resultConnection -> {
 
                 if (resultConnection.succeeded()) {
-                    resultConnection.result().queryWithParams(DBSql.GET_BIGGEST_FILE, pagination, resultSelect -> {
+                    resultConnection.result().queryWithParams(SQL, pagination, resultSelect -> {
                         if (resultSelect.succeeded()) {
                             HttpServerResponse response = handler.response();
                             response.putHeader("content-type", "application/json");
                             Buffer output = Buffer.buffer(resultSelect.result().toJson().getJsonArray("rows").encode());
                             response.putHeader("Content-Length", String.valueOf(output.length()));
-
                             response.write(output).end();
+                            resultConnection.result().close();
                         }
                     });
                 }

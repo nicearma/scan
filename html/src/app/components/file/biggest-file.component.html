@@ -1,0 +1,19 @@
+<md-list>
+  <h1 md-subheader>Files</h1>
+  <md-divider></md-divider>
+  Files:{{files}}
+  <md-list-item *ngFor="let file of files">
+    <md-icon [md-menu-trigger-for]="menu" md-list-avatar>more_vert</md-icon>
+    <md-menu #menu="mdMenu">
+      <button md-menu-item (click)="openPath(file.PATH+file.NAME)"> Open</button>
+      <button md-menu-item (click)="openPath(file.PATH)"> Folder</button>
+      <button md-menu-item disabled (click)="deletePath(file.PATH+file.NAME)"> Delete</button>
+    </md-menu>
+    <!--  <md-icon (click)="openPath(file.NAME)" md-list-avatar>insert_drive_file</md-icon>-->
+    <h4 md-line>{{file.PATH+file.NAME}}</h4>
+    <p class="secondary-text" md-line>{{file.SIZE | mega}}</p>
+
+
+  </md-list-item>
+</md-list>
+

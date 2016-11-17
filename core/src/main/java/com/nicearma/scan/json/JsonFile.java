@@ -13,6 +13,7 @@ public class JsonFile extends JsonPath implements Json{
     private long size;
     public static final String KEY_FILE_SIZE="size";
 
+
     private JsonFile(JsonObject jsonObject) {
         super(jsonObject);
         this.size=jsonObject.getLong(KEY_FILE_SIZE);
@@ -23,12 +24,20 @@ public class JsonFile extends JsonPath implements Json{
     }
 
     public JsonFile(String path, String pathOriginal, long size) {
+
         this(path, pathOriginal);
+
         this.size=size;
     }
 
     public static JsonObject getJsonObject(String path, String pathOriginal,long size){
         return new JsonFile(path,pathOriginal,size).getJsonObject();
+    }
+
+    public void cleanFilePath(){
+        if(path.contains(pathOriginal)){
+            path=  path.replace(pathOriginal,"");
+        }
     }
 
 

@@ -1,0 +1,25 @@
+<md-input #term placeholder="Your path to scan" maxlength="100" class="demo-full-width"
+          value="like C:\ or /">
+</md-input>
+<button (click)="search(term.value)" md-mini-fab color="primary">
+  <md-icon class="md-24">search</md-icon>
+</button>
+
+<md-tab-group (selectChange)="changeTab($event)">
+  <md-tab>
+    <template md-tab-label>Scaned dirs</template>
+    <template md-tab-content>
+      <folder-scaned></folder-scaned>
+    </template>
+  </md-tab>
+
+  <md-tab>
+    <template md-tab-label>Top biggest files</template>
+    <template md-tab-content>
+      <biggest-file></biggest-file>
+    </template>
+  </md-tab>
+
+</md-tab-group>
+
+

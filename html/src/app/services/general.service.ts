@@ -13,4 +13,6 @@ export class GeneralService{
     let body = res.json();
     return body || { };
   }
+
+
 }

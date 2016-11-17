@@ -1,0 +1,8 @@
+<md-list>
+    <h1 md-subheader>Folders</h1>
+    <md-divider></md-divider>
+    <md-list-item *ngFor="let folder of folders">
+      <md-icon md-list-avatar>folder</md-icon>
+      <h4 md-line>{{folder.path}}</h4>
+    </md-list-item>
+</md-list>

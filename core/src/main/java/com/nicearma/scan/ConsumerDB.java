@@ -28,7 +28,7 @@ public class ConsumerDB  extends AbstractVerticle {
                 JsonArray params=(JsonArray) message.body();
 
                     if(resultConnection.succeeded()){
-                        resultConnection.result().updateWithParams(DBSql.INSERT_FILE,params, result->{
+                        resultConnection.result().updateWithParams(DBSql.MERGE_FILE,params, result->{
                             if(result.succeeded()){
                                 logger.debug("insert",params);
                             }else{
