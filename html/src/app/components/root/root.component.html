@@ -1,25 +1,40 @@
-<md-input #term placeholder="Your path to scan" maxlength="100" class="demo-full-width"
-          value="like C:\ or /">
-</md-input>
-<button (click)="search(term.value)" md-mini-fab color="primary">
-  <md-icon class="md-24">search</md-icon>
-</button>
+<md-sidenav-layout fullscreen>
+  <md-sidenav #start>
+    <md-nav-list>
+      <a md-list-item routerLink="">
+        Search
+      </a>
+      <hr>
+      <a md-list-item routerLink="/biggest-file">
+        Biggest file
+      </a>
+      <hr>
+      <a md-list-item routerLink="/biggest-folder">
+        Biggest Folder
+      </a>
+      <hr>
+      <a md-list-item routerLink="/biggest-extension">
+        Biggest extension
+      </a>
+      <hr>
+      <a md-list-item routerLink="/expert">
+        Expert mode
+      </a>
+      <hr>
+    </md-nav-list>
+  </md-sidenav>
+  <div>
+    <md-toolbar color="primary">
+      <button md-icon-button (click)="start.open()">
+        <md-icon class="md-24">menu</md-icon>
+      </button>
+      <div class="toolbar">
+        <h1>Scan!!!</h1>
+      </div>
+    </md-toolbar>
+  </div>
 
-<md-tab-group (selectChange)="changeTab($event)">
-  <md-tab>
-    <template md-tab-label>Scaned dirs</template>
-    <template md-tab-content>
-      <folder-scaned></folder-scaned>
-    </template>
-  </md-tab>
-
-  <md-tab>
-    <template md-tab-label>Top biggest files</template>
-    <template md-tab-content>
-      <biggest-file></biggest-file>
-    </template>
-  </md-tab>
-
-</md-tab-group>
-
-
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</md-sidenav-layout>

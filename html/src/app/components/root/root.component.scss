@@ -1,0 +1,22 @@
+md-sidenav {
+  min-width: 15%;
+
+}
+
+.content {
+  padding: 32px;
+}
+
+md-toolbar {
+  md-icon {
+    cursor: pointer;
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+

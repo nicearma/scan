@@ -15,7 +15,7 @@ public class DBConnector extends AbstractVerticle {
     @Override
     public void start() throws Exception {
         this.jdbc = JDBCClient.createShared(vertx, new JsonObject()
-                .put("url", "jdbc:h2:file:C:/Users/nicea/Documents/database/data")
+                .put("url", "jdbc:h2:mem:scan")
                 .put("driver_class", "org.h2.Driver"));
     }
 

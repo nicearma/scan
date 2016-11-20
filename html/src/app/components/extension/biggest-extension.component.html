@@ -1,14 +1,9 @@
-<template md-tab-label>Top biggest extension</template>
-<template md-tab-content>
-  <md-list>
-    <h1 md-subheader>Extension</h1>
-    <md-divider></md-divider>
-    <md-list-item *ngFor="let extension of extensions">
-      <!--  <md-icon (click)="openPath(file.NAME)" md-list-avatar>insert_drive_file</md-icon>-->
-      <h4 md-line>{{extension}}</h4>
-      <p class="secondary-text" md-line>{{extension | mega}}</p>
-
-
-    </md-list-item>
-  </md-list>
-</template>
+<md-list>
+  <h1 md-subheader>Extension</h1>
+  <md-divider></md-divider>
+  <md-list-item *ngFor="let extension of extensions">
+    <md-icon md-list-avatar>folder</md-icon>
+    <h4 md-line>{{extension.EXTENSION}}</h4>
+    <p class="secondary-text" md-line>{{extension.SIZE | mega}}</p>
+  </md-list-item>
+</md-list>

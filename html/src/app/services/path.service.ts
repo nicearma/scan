@@ -14,6 +14,6 @@ export class PathService extends GeneralService{
 
   openPath(path :String) : void  {
     var jsonPath={path};
-    this.http.post(this.server+this.pathOpenUrl,jsonPath).subscribe(e=>console.log(e));
+    this.http.post(this.pathOpenUrl,jsonPath).subscribe(e=>console.log(e));
   }
 }

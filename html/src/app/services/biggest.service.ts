@@ -18,7 +18,6 @@ export class BiggestService extends GeneralService{
 
   constructor(protected http: Http){
     super(http);
-
   }
 
   getBiggestFile() : Observable<Array<BiggestFile>>  {

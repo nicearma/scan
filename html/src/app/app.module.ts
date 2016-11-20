@@ -12,6 +12,8 @@ import {BiggestFolderComponent} from "./components/folder/biggest-folder.compone
 import {BiggestExtensionComponent} from "./components/extension/biggest-extension.component";
 import {SearchComponent} from "./components/search/search.component";
 import {FolderScanedComponent} from "./components/folder/folder-scaned.component";
+import {RouterModule} from "@angular/router";
+import {SCAN_ROUTES} from "./routes/routes";
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import {FolderScanedComponent} from "./components/folder/folder-scaned.component
     MaterialModule.forRoot(),
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    RouterModule.forRoot(SCAN_ROUTES)
   ],
   providers: [],
   bootstrap: [RootComponent]

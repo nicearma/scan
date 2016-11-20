@@ -1,8 +1,9 @@
   <md-list>
     <h1 md-subheader>Folders</h1>
     <md-divider></md-divider>
-    <md-list-item *ngFor="let dir of dirs">
+    <md-list-item *ngFor="let folder of folders">
       <md-icon md-list-avatar>folder</md-icon>
-      <h4 md-line>{{dir.path}}</h4>
+      <h4 md-line>{{folder.PATH}}</h4>
+      <p class="secondary-text" md-line>{{folder.SIZE | mega}}</p>
     </md-list-item>
   </md-list>

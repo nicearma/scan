@@ -1,7 +1,6 @@
 <md-list>
   <h1 md-subheader>Files</h1>
   <md-divider></md-divider>
-  Files:{{files}}
   <md-list-item *ngFor="let file of files">
     <md-icon [md-menu-trigger-for]="menu" md-list-avatar>more_vert</md-icon>
     <md-menu #menu="mdMenu">

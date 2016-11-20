@@ -11,7 +11,7 @@ public class DBSql {
 
     public final static String GET_BIGGEST_FILE= "SELECT path, name, size FROM file ORDER BY size DESC LIMIT ?,? ";
     public final static String GET_BIGGEST_FOLDER= "SELECT sum(SIZE) as SIZE, PATH from FILE GROUP BY PATH ORDER BY size DESC LIMIT ?,? ";
-    public final static String GET_BIGGEST_TYPE_FILE= "SELECT SUBSTRING(NAME,  CHARINDEX('.', NAME,-3)) AS EXTENSION, sum(SIZE) as SIZE from FILE GROUP BY EXTENSION ORDER BY size DESC LIMIT ?,? ";
+    public final static String GET_BIGGEST_EXTENSION= "SELECT SUBSTRING(NAME,  CHARINDEX('.', NAME,-3)) AS EXTENSION, sum(SIZE) as SIZE from FILE GROUP BY EXTENSION ORDER BY size DESC LIMIT ?,? ";
 
 
 

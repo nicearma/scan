@@ -124,10 +124,10 @@ public class Rest extends AbstractVerticle {
         addGetInformation("/api/biggest/file",DBSql.GET_BIGGEST_FILE);
     }
     public void addGetBiggestFolder() {
-        addGetInformation("/api/biggest/folder",DBSql.GET_BIGGEST_FILE);
+        addGetInformation("/api/biggest/folder",DBSql.GET_BIGGEST_FOLDER);
     }
     public void addGetBiggestExtension() {
-        addGetInformation("/api/biggest/extension",DBSql.GET_BIGGEST_FILE);
+        addGetInformation("/api/biggest/extension",DBSql.GET_BIGGEST_EXTENSION);
     }
 
     public void addGetInformation(String route, String SQL) {

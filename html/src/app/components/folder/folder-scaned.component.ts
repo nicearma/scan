@@ -1,7 +1,4 @@
 import {Component} from "@angular/core";
-import {BiggestService} from "../../services/biggest.service";
-import {Biggest} from "../biggest";
-import {PathService} from "../../services/path.service";
 import {ScanService} from "../../services/scan.service";
 import {Folder} from "../../interface/Folder";
 import {EventEmitters} from "../../services/eventEmitter.service";

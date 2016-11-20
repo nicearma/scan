@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {BiggestService} from "../../services/biggest.service";
-import {Biggest} from "../biggest";
+import {BiggestComponent} from "../biggestComponent";
 import {PathService} from "../../services/path.service";
 import {EventEmitters} from "../../services/eventEmitter.service";
 import {BiggestFile} from "../../interface/BiggestFile";
@@ -11,24 +11,18 @@ import {BiggestFile} from "../../interface/BiggestFile";
   styleUrls: ['biggest-file.component.scss'],
   providers: [PathService, BiggestService]
 })
-export class BiggestFileComponent extends Biggest {
+export class BiggestFileComponent extends BiggestComponent {
 
   files: Array<BiggestFile> = [];
 
-  constructor(protected pathService: PathService, private informationService: BiggestService) {
-    super(pathService);
-    let that = this;
-    EventEmitters.get("files").subscribe(() => {
-      that.getBiggestFile();
-    });
+  constructor(protected pathService: PathService, protected biggestService: BiggestService) {
+    super(pathService, biggestService);
   }
 
-  getBiggestFile() {
-    this.informationService.getBiggestFile().subscribe(result => {
-      console.log(result);
-      console.log(this.files);
-      this.files = result;
-      console.log(this.files);
+  getBiggest() {
+    let that = this;
+    this.biggestService.getBiggestFile().subscribe(result => {
+      that.files = result;
     })
   }
 
