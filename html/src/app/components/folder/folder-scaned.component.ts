@@ -9,21 +9,43 @@ import {EventEmitters} from "../../services/eventEmitter.service";
   styleUrls: ['folder-scaned.component.scss'],
   providers: [ScanService]
 })
-export class FolderScanedComponent  {
+export class FolderScanedComponent {
 
-  folders: Array<Folder> = [];
+  size = 20;
+  folders: Folder[] = [];
+  foldersScaned: Folder[] = [];
 
-  constructor(private scanService: ScanService){
+  constructor(private scanService: ScanService) {
 
-    let that=this;
-    EventEmitters.get("search").subscribe(()=>{
-      that.folders=[];
+    let that = this;
+    EventEmitters.get("search").subscribe(() => {
+      that.folders = [];
     });
 
     this.scanService.getObservableDirs().subscribe((folder: Folder) => {
       if (folder && folder.path) {
-        that.folders.push(folder);
+        that.foldersScaned.push(folder);
+        if(that.size>that.foldersScaned.length){
+          that.addFolders();
+        }
+
       }
     });
+  }
+
+  addFolders() {
+
+    console.log("addFolders");
+    let maxSize = this.foldersScaned.length;
+    let shotSize = this.folders.length;
+    if (maxSize > shotSize) {
+      var maxSizeAdd=maxSize;
+      if(shotSize+maxSize<maxSize){
+         maxSizeAdd+=maxSize;
+      }
+      this.folders=  this.folders.concat(this.foldersScaned.slice(shotSize,maxSizeAdd))
+    }
+
+
   }
 }
