@@ -1,10 +1,10 @@
 package com.nicearma.scan.http;
 
 
-import com.nicearma.scan.Scan;
-import com.nicearma.scan.db.DBConnector;
-import com.nicearma.scan.db.DBSql;
-import com.nicearma.scan.json.JsonPath;
+import com.nicearma.scan.core.Scan;
+import com.nicearma.scan.core.db.DBConnector;
+import com.nicearma.scan.core.db.DBSql;
+import com.nicearma.scan.core.json.JsonPath;
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.buffer.Buffer;

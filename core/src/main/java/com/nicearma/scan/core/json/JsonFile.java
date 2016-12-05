@@ -1,8 +1,7 @@
-package com.nicearma.scan.json;
+package com.nicearma.scan.core.json;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

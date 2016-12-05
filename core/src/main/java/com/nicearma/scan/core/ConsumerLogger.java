@@ -1,4 +1,4 @@
-package com.nicearma.scan;
+package com.nicearma.scan.core;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonArray;

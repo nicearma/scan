@@ -1,10 +1,8 @@
-package com.nicearma;
+package com.nicearma.scan.http;
 
-import com.nicearma.scan.ConsumerDB;
-import com.nicearma.scan.Scan;
-import com.nicearma.scan.db.DBConnector;
-import com.nicearma.scan.http.ConsumerHttp;
-import com.nicearma.scan.http.Rest;
+import com.nicearma.scan.core.ConsumerDB;
+import com.nicearma.scan.core.Scan;
+import com.nicearma.scan.core.db.DBConnector;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Verticle;

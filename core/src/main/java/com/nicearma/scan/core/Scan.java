@@ -1,7 +1,7 @@
-package com.nicearma.scan;
+package com.nicearma.scan.core;
 
-import com.nicearma.scan.json.JsonFile;
-import com.nicearma.scan.json.JsonPath;
+import com.nicearma.scan.core.json.JsonFile;
+import com.nicearma.scan.core.json.JsonPath;
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.file.FileProps;
