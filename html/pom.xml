@@ -93,10 +93,32 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/extra-resource/webroot</outputDirectory>
+              <resources>          
+                <resource>
+                  <directory>./dist</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>              
+            </configuration>            
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
     <resources>
       <resource>
-        <directory>./dist</directory>
+        <directory>${basedir}/target/extra-resource/</directory>
       </resource>
     </resources>
   </build>
