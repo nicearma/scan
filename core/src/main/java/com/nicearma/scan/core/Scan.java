@@ -11,6 +11,8 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.jdbc.JDBCClient;
 
+import java.util.HashSet;
+
 /**
  * Created by nicea on 03/10/2016.
  */
@@ -22,7 +24,7 @@ public class Scan extends AbstractVerticle {
     public static final String EVENT_DIR_PROPS ="eventDirProps";
     public static final String EVENT_FILE_PROPS ="eventFileProps";
     public static final String EVENT_DIR_SCANED ="eventDirScaned";
-
+    public static  HashSet<String> alreadyScaned= new HashSet<>();
 
 
     JDBCClient jdbc;
@@ -44,11 +46,15 @@ public class Scan extends AbstractVerticle {
                 return;
             }
 
+            if(alreadyScaned.contains(jsonPath.getPath())){
+                return;
+            }
+            alreadyScaned.add(jsonPath.getPath());
             //logger.info(path);
             vertx.fileSystem().props(jsonPath.getPath(), props -> {
                 //logger.info(path);
                 if (props.succeeded()) {
-                    if (props.result().isDirectory()) {
+                    if (props.result().isDirectory() && !props.result().isSymbolicLink()) {
                         vertx.fileSystem().readDir(jsonPath.getPath(), resultDir -> {
                             if (resultDir.succeeded()) {
                                 if(resultDir.result()!=null && !resultDir.result().isEmpty()){
