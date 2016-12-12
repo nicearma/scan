@@ -7,9 +7,9 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
-/**
- * Created by nicea on 08/10/2016.
- */
+import javax.enterprise.context.Dependent;
+
+@Dependent
 public class ConsumerHttp  extends AbstractVerticle  {
 
 

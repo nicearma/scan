@@ -2,7 +2,7 @@ package com.nicearma.scan.http;
 
 
 import com.nicearma.scan.core.Scan;
-import com.nicearma.scan.core.db.DBConnector;
+import com.nicearma.scan.core.db.DBConnectorService;
 import com.nicearma.scan.core.db.DBSql;
 import com.nicearma.scan.core.json.JsonPath;
 import io.netty.util.internal.StringUtil;
@@ -23,23 +23,21 @@ import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.ext.web.handler.sockjs.PermittedOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+@Dependent
 public class Rest extends AbstractVerticle {
 
     Router router;
-    protected DBConnector dbConnector;
+    @Inject
+    protected DBConnectorService dbConnector;
     Logger logger = LoggerFactory.getLogger(Rest.class);
     public static final String EVENT_HTTP_FILE_PROPS = "eventHttpFileProps";
     public static final String EVENT_HTTP_DIR_SCANED = "eventHttpDirScaned";
-
-
-    public Rest(DBConnector dbConnector) {
-        this.dbConnector = dbConnector;
-    }
-
 
     @Override
     public void start() throws Exception {
@@ -151,7 +149,7 @@ public class Rest extends AbstractVerticle {
             }
 
 
-            this.dbConnector.getJbdc().getConnection(resultConnection -> {
+            this.dbConnector.getJdbc().getConnection(resultConnection -> {
 
                 if (resultConnection.succeeded()) {
                     resultConnection.result().queryWithParams(SQL, pagination, resultSelect -> {

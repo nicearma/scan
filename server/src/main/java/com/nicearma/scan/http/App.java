@@ -2,13 +2,14 @@ package com.nicearma.scan.http;
 
 import com.nicearma.scan.core.ConsumerDB;
 import com.nicearma.scan.core.Scan;
-import com.nicearma.scan.core.db.DBConnector;
+import com.nicearma.scan.core.db.DBConnectorService;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import org.jboss.weld.vertx.WeldVerticle;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,28 +27,21 @@ public class App
 
         Vertx vertx = Vertx.vertx();
 
-        List<Future> futures=new ArrayList<>();
+        final WeldVerticle weldVerticle = new WeldVerticle();
+        vertx.deployVerticle(weldVerticle, result -> {
+            if (result.succeeded()) {
+                //weldVerticle.container().select(DBConnectorService.class).get().
+                vertx.deployVerticle(weldVerticle.container().select(Scan.class).get());
+                vertx.deployVerticle(weldVerticle.container().select(ConsumerDB.class).get());
 
-        DBConnector dbConnector=new DBConnector();
-        addVerticleToFuture(vertx, futures, dbConnector);
-
-
-
-        addVerticleToFuture(vertx, futures, new Rest(dbConnector));
-
-        addVerticleToFuture(vertx, futures,new Scan());
-
-        CompositeFuture.all(futures).setHandler(results->{
-            addVerticleToFuture(vertx, futures, new ConsumerDB(dbConnector));
-            addVerticleToFuture(vertx, futures, new ConsumerHttp());
+                vertx.deployVerticle(weldVerticle.container().select(ConsumerHttp.class).get());
+                vertx.deployVerticle(weldVerticle.container().select(Rest.class).get());
+            }
         });
 
 
+
+
     }
 
-    protected static void addVerticleToFuture(Vertx vertx, List<Future> futures, Verticle verticle){
-        Future future = Future.future();
-        vertx.deployVerticle(verticle,future.completer());
-        futures.add(future);
-    }
 }

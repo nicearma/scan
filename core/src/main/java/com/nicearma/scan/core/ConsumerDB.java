@@ -1,28 +1,30 @@
 package com.nicearma.scan.core;
 
-import com.nicearma.scan.core.db.DBConnector;
+
+import com.nicearma.scan.core.db.DBConnectorService;
 import com.nicearma.scan.core.db.DBSql;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
-/**
- * Created by nicea on 05/10/2016.
- */
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
+
+@Dependent
 public class ConsumerDB  extends AbstractVerticle {
 
     protected Logger logger = LoggerFactory.getLogger(ConsumerDB.class);
-    protected DBConnector dbConnector;
 
-    public ConsumerDB(DBConnector dbConnector) {
-        this.dbConnector = dbConnector;
-    }
+    @Inject
+    protected DBConnectorService dbConnector;
+
 
     // Called when verticle is deployed
     public void start() {
 
-        dbConnector.getJbdc().getConnection(resultConnection->{
+        dbConnector.getJdbc().getConnection(resultConnection->{
 
             this.vertx.eventBus().consumer(Scan.EVENT_FILE_PROPS, message -> {
                 JsonArray params=(JsonArray) message.body();

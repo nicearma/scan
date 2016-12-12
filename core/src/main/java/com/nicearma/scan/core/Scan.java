@@ -11,11 +11,11 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.jdbc.JDBCClient;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import java.util.HashSet;
 
-/**
- * Created by nicea on 03/10/2016.
- */
+@Dependent
 public class Scan extends AbstractVerticle {
 
     Logger logger = LoggerFactory.getLogger(Scan.class);
@@ -24,14 +24,10 @@ public class Scan extends AbstractVerticle {
     public static final String EVENT_DIR_PROPS ="eventDirProps";
     public static final String EVENT_FILE_PROPS ="eventFileProps";
     public static final String EVENT_DIR_SCANED ="eventDirScaned";
-    public static  HashSet<String> alreadyScaned= new HashSet<>();
 
+    @Inject
+    FilterService filterService;
 
-    JDBCClient jdbc;
-
-    public Scan() {
-
-    }
 
     // Called when verticle is deployed
     public void start() {
@@ -46,10 +42,10 @@ public class Scan extends AbstractVerticle {
                 return;
             }
 
-            if(alreadyScaned.contains(jsonPath.getPath())){
+            if(filterService.isFiltered(jsonPath.getPath())){
                 return;
             }
-            alreadyScaned.add(jsonPath.getPath());
+
             //logger.info(path);
             vertx.fileSystem().props(jsonPath.getPath(), props -> {
                 //logger.info(path);
